@@ -18,31 +18,3 @@ export function logError(error: unknown, userFriendlyMessage?: string) {
     console.error(errorMessage, errorDetails);
   }
 }
-
-export function fetchValueFromLocalStorage<T>(
-  key: string,
-  fallbackValue?: T
-): T | undefined {
-  const value = localStorage.getItem(key);
-
-  if (!value) {
-    return fallbackValue;
-  }
-
-  try {
-    return JSON.parse(value);
-  } catch (error) {
-    logError(error, `Error fetching value for key "${key}" in localStorage`);
-
-    return fallbackValue;
-  }
-}
-
-export function storeValueInLocalStorage<T>(key: string, value: T): void {
-  try {
-    const serializedValue = JSON.stringify(value);
-    localStorage.setItem(key, serializedValue);
-  } catch (error) {
-    logError(error, `Error storing value for key "${key}" in localStorage:`);
-  }
-}

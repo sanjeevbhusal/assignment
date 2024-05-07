@@ -4,7 +4,7 @@ import { logError } from "../utils";
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] {
+): [T, (updatedValue: T) => void] {
   const [value, setValue] = useState<T>(() => {
     const value = localStorage.getItem(key);
 
@@ -16,7 +16,6 @@ export function useLocalStorage<T>(
       return JSON.parse(value);
     } catch (error) {
       logError(error, `Error fetching value for key "${key}" in localStorage`);
-
       return initialValue;
     }
   });
@@ -27,7 +26,6 @@ export function useLocalStorage<T>(
   }, [key, value]);
 
   function setLocalStorageValue(updatedValue: T) {
-    console.log({ updatedValue });
     try {
       setValue(updatedValue);
     } catch (error) {
